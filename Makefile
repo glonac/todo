@@ -42,6 +42,12 @@ stop:
 
 restart: stop up
 
+up-dev:
+	@echo "\n\033[1;m Spinning up containers for ${ENVIRONMENT} environment... \033[0m"
+	@docker-compose -f docker-compose.dev.yml up -d
+	@$(MAKE) --no-print-directory status
+
+
 down:
 	echo "\n\033[1;m Removing containers... \033[0m"
 	@docker-compose  ${COMPOSE_PROJECT_NAME} down

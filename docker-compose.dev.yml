@@ -1,0 +1,62 @@
+version: "3.1"
+services:
+  auth-service:
+    container_name: auth-service
+    build:
+      context: ./todo-service
+      dockerfile: Dockerfile
+    ports:
+      - ${AUTH_PORT}:${AUTH_PORT}
+    working_dir: /usr/src/app
+    command: npm run start:dev
+    restart: always
+    read_only: true
+    environment:
+      - PORT=${AUTH_PORT}
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_NAME=${MONGO_NAME}
+      - JWT_TOKEN_LIVE=${JWT_TOKEN_LIVE}
+      - JWT_TOKEN_SECRET={JWT_TOKEN_SECRET}
+    depends_on:
+      - mongo
+
+  todo-service:
+    container_name: todo-service
+    build:
+      context: ./todo-service
+      dockerfile: Dockerfile
+    ports:
+      - ${TODO_PORT}:${TODO_PORT}
+    working_dir: /usr/src/app
+
+    volumes:
+      - ./todo-service:/usr/src/app
+    command: npm run start:dev
+    restart: always
+    read_only: true
+    environment:
+      - PORT=${TODO_PORT}
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_NAME=${MONGO_NAME}
+      - JWT_TOKEN_LIVE=${JWT_TOKEN_LIVE}
+      - JWT_TOKEN_SECRET={JWT_TOKEN_SECRET}
+    depends_on:
+      - mongo
+
+  mongo:
+    container_name: mongo_db
+    image: mongo:4
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+      - MONGO_INITDB_DATABASE=${MONGO_NAME_AUTH}
+      - MONGO_INITDB_DATABASE=${MONGO_NAME_TODO}
+    volumes:
+      - storage:/data/db
+    ports:
+      - ${MONGO_PORT}:${MONGO_PORT}
+
+volumes:
+  storage:
