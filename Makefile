@@ -13,9 +13,17 @@ docker-env: clone up
 
 deploy: rebuild up
 
-clone:
-	@echo "\n\033[1;m Cloning App (${BRANCH_NAME} branch) \033[0m"
-	@if cd app 2> /dev/null; then git checkout package-lock.json && git pull; else git clone -b ${BRANCH_NAME} ${GIT_URL} app; fi
+
+clone: clone-auth-service clone-todo-service
+
+clone-auth-service:
+	@echo "\n\033[01;33m Cloning auth-service repository \033[0m"
+	@bash -c "if [ -d ./auth-service ]; then cd ./auth-service && git fetch && git checkout main && git reset --hard origin/main; else git clone -b main git@github.com:glonac/auth-service.git ./auth-service; fi"
+
+clone-todo-service:
+	@echo "\n\033[01;33m Cloning todo-service repository  \033[0m"
+	@bash -c "if [ -d ./todo-service ]; then cd ./todo-service && git fetch && git checkout main && git reset --hard origin/main; else git clone -b main git@github.com:glonac/todo-service.git ./auth-service; fi"
+
 
 rebuild: stop
 	@echo "\n\033[1;m Rebuilding containers... \033[0m"
