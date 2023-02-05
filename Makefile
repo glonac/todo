@@ -22,7 +22,7 @@ clone-auth-service:
 
 clone-todo-service:
 	@echo "\n\033[01;33m Cloning todo-service repository  \033[0m"
-	@bash -c "if [ -d ./todo-service ]; then cd ./todo-service && git fetch && git checkout main && git reset --hard origin/main; else git clone -b main git@github.com:glonac/todo-service.git ./auth-service; fi"
+	@bash -c "if [ -d ./todo-service ]; then cd ./todo-service && git fetch && git checkout main && git reset --hard origin/main; else git clone -b main git@github.com:glonac/todo-service.git ./todo-service; fi"
 
 
 rebuild: stop
