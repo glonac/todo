@@ -2,8 +2,8 @@
 Приложение содержит в себе два сервиса - auth для простой авторизации пользователя и todo с возможностью создавать и получать записи todo , все сервисы хранятся в docker images и оркестрируются с помощью docker-compose
 
 Маппинг endpoint можно посмотреть:
-http://localhost:3000/api
-http://localhost:3001/api
+1. http://localhost:3000/api
+2. http://localhost:3001/api
 
 ## How start app:
 
